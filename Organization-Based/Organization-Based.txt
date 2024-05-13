@@ -1,0 +1,18 @@
+SELECT DISTINCT ?human ?humanLabel ?organizationLabel ?collectionItemsAtLabel WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". } 
+  {
+    SELECT DISTINCT ?human WHERE {
+      ?human p:P11146 ?statement0. # Collection items are stored somewhere
+    }
+  }
+  OPTIONAL { ?human wdt:P463 ?organizationItem. 
+             ?organizationItem rdfs:label ?organizationLabel. 
+             FILTER(LANG(?organizationLabel) = "[AUTO_LANGUAGE]") 
+  }
+  OPTIONAL { ?human wdt:P11146 ?collectionItemsAt.
+    	     ?collectionItemsAt rdfs:label ?collectionItemsAtLabel.
+    	     FILTER(LANG(?collectionItemsAtLabel) = "[AUTO_LANGUAGE]")
+  }
+}
+ORDER BY ?humanLabel
+
